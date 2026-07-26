@@ -1,202 +1,114 @@
-// ========================
+// =========================
 // 낚시왕 상점 시스템
 // shop.js
-// ========================
+// =========================
 
 
+let shopItems = [
 
-const shopItems = [
+{
+id:1,
+name:"일반 미끼",
+type:"bait",
+price:1000,
+power:1
+},
 
-    {
-        name:"🪱 일반 미끼",
-        price:500,
-        item:"일반 미끼"
-    },
+{
+id:2,
+name:"고급 미끼",
+type:"bait",
+price:10000,
+power:3
+},
 
-    {
-        name:"✨ 고급 미끼",
-        price:3000,
-        item:"고급 미끼"
-    },
+{
+id:3,
+name:"황금 미끼",
+type:"bait",
+price:50000,
+power:5
+},
 
-    {
-        name:"🌟 황금 미끼",
-        price:10000,
-        item:"황금 미끼"
-    },
+{
+id:4,
+name:"튼튼한 낚싯대",
+type:"rod",
+price:100000,
+power:10
+},
 
-    {
-        name:"🍀 행운권",
-        price:5000,
-        item:"행운권"
-    },
-
-    {
-        name:"💰 골드 상자",
-        price:10000,
-        item:"골드 상자"
-    }
+{
+id:5,
+name:"전설의 낚싯대",
+type:"rod",
+price:1000000,
+power:30
+}
 
 ];
 
 
 
 
-// 상점 열기
+let ownedItems = [];
 
-function showShop(){
-
-
-    let text =
-    "🏪 낚시왕 상점\n\n";
-
-
-    text +=
-    "💰 보유 골드 : "
-    +
-    gold
-    +
-    "G\n\n";
-
-
-    shopItems.forEach((item,i)=>{
-
-
-        text +=
-
-        (i+1)
-        +
-        ". "
-        +
-        item.name
-        +
-        " : "
-        +
-        item.price
-        +
-        "G\n";
-
-
-    });
-
-
-
-    text +=
-    "\n물고기 판매 버튼으로 판매 가능";
-
-
-    alert(text);
-
-
-}
 
 
 
 
 // 아이템 구매
 
-function buyItem(index){
+function buyItem(id){
 
 
-    let item =
-    shopItems[index];
+let item = shopItems.find(
 
+i=>i.id===id
 
-    if(!item){
-
-        return;
-
-    }
+);
 
 
 
-    if(gold < item.price){
+if(!item)
 
-
-        alert(
-        "골드가 부족합니다."
-        );
-
-
-        return;
-
-    }
+return;
 
 
 
-    gold -= item.price;
+if(gold < item.price){
 
 
-    addItem(
-        item.item,
-        1
-    );
+alert("💰 골드가 부족합니다.");
 
-
-    alert(
-
-    item.name+
-    " 구매 완료!"
-
-    );
-
-
-    updateUI();
-
-
-    saveGame();
+return;
 
 
 }
 
 
 
-
-// 물고기 판매
-
-function sellFish(index){
-
-
-    let fish =
-    caughtFish[index];
-
-
-    if(!fish){
-
-        return;
-
-    }
+gold -= item.price;
 
 
 
-    gold += fish.price;
+ownedItems.push(item);
 
 
 
-    caughtFish.splice(
+alert(
 
-        index,
+"🛒 구매 완료!\n"
 
-        1
++
 
-    );
+item.name
 
-
-
-    alert(
-
-    fish.name+
-    " 판매!\n"+
-    fish.price+
-    "G 획득"
-
-    );
+);
 
 
-    updateUI();
 
-
-    saveGame();
+updateUI();
 
 
 }
@@ -205,47 +117,117 @@ function sellFish(index){
 
 
 
-// 전체 물고기 판매
-
-function sellAllFish(){
 
 
-    let total = 0;
+// 상점 보기
+
+function showShop(){
 
 
+let text =
 
-    caughtFish.forEach(f=>{
-
-
-        total += f.price;
-
-
-    });
+"🛒 상점\n\n";
 
 
 
-    caughtFish = [];
+shopItems.forEach(item=>{
+
+
+text +=
+
+item.id
+
++
+
+". "
+
++
+
+item.name
+
++
+
+"\n"
+
++
+
+"가격 : "
+
++
+
+item.price
+
++
+
+"G\n\n";
+
+
+});
 
 
 
-    gold += total;
+alert(text);
+
+
+}
 
 
 
-    alert(
-
-    "🐟 물고기 전체 판매\n"+
-    total+
-    "G 획득"
-
-    );
 
 
 
-    updateUI();
 
 
-    saveGame();
+// 보유 아이템 보기
+
+function showItems(){
+
+
+let text =
+
+"🎒 보유 아이템\n\n";
+
+
+
+if(ownedItems.length===0){
+
+
+text += "없음";
+
+
+}
+
+else{
+
+
+ownedItems.forEach((item,i)=>{
+
+
+text +=
+
+(i+1)
+
++
+
+". "
+
++
+
+item.name
+
++
+
+"\n";
+
+
+});
+
+
+}
+
+
+
+alert(text);
 
 
 }
