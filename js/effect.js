@@ -1,103 +1,59 @@
-// ========================
-// 낚시왕 낚시 효과 시스템
+// =========================
+// 낚시왕 픽셀 효과 시스템
 // effect.js
-// ========================
+// =========================
 
 
 
-// 낚시 발견 효과
+// 낚시 시작 효과
 
-function fishEffect(fish){
-
-
-    let message="";
+function fishingEffect(){
 
 
+let effect =
 
-    switch(fish.grade){
+document.getElementById(
 
+"effect"
 
-        case "일반":
-
-            message =
-            "🎣 물고기를 낚았습니다!";
-
-        break;
+);
 
 
 
-        case "희귀":
+if(!effect)
 
-            message =
-            "✨ 희귀 물고기 발견!";
-
-        break;
+return;
 
 
 
-        case "전설":
+effect.innerHTML =
 
-            message =
-            "👑 전설의 물고기가 나타났습니다!";
-
-        break;
+"🎣";
 
 
 
-        case "신화":
+effect.classList.add(
 
-            message =
-            "🌌 신화급 물고기 발견!!";
+"shake"
 
-        break;
-
-
-        default:
-
-            message =
-            "🎣 낚시 성공!";
-
-    }
+);
 
 
 
-    return message;
+setTimeout(()=>{
 
 
-}
+effect.classList.remove(
+
+"shake"
+
+);
 
 
+effect.innerHTML="";
 
 
-
-// 화면 효과
-
-function showEffect(fish){
-
-
-    let effect = fishEffect(fish);
-
-
-
-    let result =
-
-    document.getElementById("result");
-
-
-
-    if(result){
-
-
-        result.innerHTML =
-
-        "<h2>"+
-
-        effect+
-
-        "</h2>";
-
-
-    }
+},1000);
 
 
 
@@ -107,20 +63,235 @@ function showEffect(fish){
 
 
 
-// 희귀도 확인
-
-function isRareFish(fish){
 
 
-    return (
 
-        fish.grade==="희귀" ||
+// 물고기 등장 효과
 
-        fish.grade==="전설" ||
+function fishAppearEffect(fish){
 
-        fish.grade==="신화"
 
-    );
+let img =
+
+document.getElementById(
+
+"fishImage"
+
+);
+
+
+
+if(!img)
+
+return;
+
+
+
+img.src = fish.image;
+
+
+
+img.style.display="block";
+
+
+
+img.classList.add(
+
+"fish-pop"
+
+);
+
+
+
+
+
+setTimeout(()=>{
+
+
+img.classList.remove(
+
+"fish-pop"
+
+);
+
+
+
+},1000);
+
+
+
+}
+
+
+
+
+
+
+
+
+// 성공 메시지
+
+function catchEffect(fish,weight){
+
+
+let box =
+
+document.getElementById(
+
+"message"
+
+);
+
+
+
+if(!box)
+
+return;
+
+
+
+box.innerHTML =
+
+
+"🎉 낚시 성공!<br>"
+
++
+
+fish.name
+
++
+
+"<br>"
+
++
+
+weight
+
++
+
+"kg";
+
+
+
+box.classList.add(
+
+"show"
+
+);
+
+
+
+
+
+setTimeout(()=>{
+
+
+box.classList.remove(
+
+"show"
+
+);
+
+
+},2000);
+
+
+
+}
+
+
+
+
+
+
+
+
+// 실패 효과
+
+function failEffect(){
+
+
+
+let box =
+
+document.getElementById(
+
+"message"
+
+);
+
+
+
+if(box){
+
+
+box.innerHTML =
+
+"😢 물고기가 도망갔습니다.";
+
+
+
+box.classList.add(
+
+"show"
+
+);
+
+
+
+setTimeout(()=>{
+
+
+box.classList.remove(
+
+"show"
+
+);
+
+
+},1500);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+// 화면 흔들림
+
+function screenShake(){
+
+
+
+document.body.classList.add(
+
+"shake"
+
+);
+
+
+
+setTimeout(()=>{
+
+
+document.body.classList.remove(
+
+"shake"
+
+);
+
+
+},500);
+
 
 
 }
