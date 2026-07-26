@@ -1,231 +1,109 @@
-// ========================
+// =========================
 // 낚시왕 지역 시스템
 // area.js
-// ========================
-
-
-const areas = [
-
-    {
-        id:0,
-        name:"🏞️ 초보 낚시터",
-        level:1,
-        boat:0,
-        open:true
-    },
-
-    {
-        id:1,
-        name:"🌿 강가",
-        level:3,
-        boat:0,
-        open:false
-    },
-
-    {
-        id:2,
-        name:"🏕️ 계곡",
-        level:8,
-        boat:0,
-        open:false
-    },
-
-    {
-        id:3,
-        name:"🌅 호수",
-        level:12,
-        boat:0,
-        open:false
-    },
-
-    {
-        id:4,
-        name:"🏝️ 해변",
-        level:18,
-        boat:0,
-        open:false
-    },
-
-    {
-        id:5,
-        name:"🌊 깊은 바다",
-        level:25,
-        boat:1,
-        open:false
-    },
-
-    {
-        id:6,
-        name:"🌑 심해",
-        level:35,
-        boat:2,
-        open:false
-    },
-
-    {
-        id:7,
-        name:"❄️ 얼음 바다",
-        level:45,
-        boat:3,
-        open:false
-    },
-
-    {
-        id:8,
-        name:"🌌 신비의 바다",
-        level:60,
-        boat:3,
-        open:false
-    },
-
-    {
-        id:9,
-        name:"👑 전설의 낚시터",
-        level:80,
-        boat:4,
-        open:false
-    }
-
-];
-
+// =========================
 
 
 let currentArea = 0;
 
 
 
-
-// 지역 이동
-
-function changeArea(id){
+const areaList = [
 
 
-    let area = areas[id];
+{
+name:"🏞️ 초보 낚시터",
+level:1,
+background:"assets/map/lake.png",
+fish:"초보 낚시터"
+},
 
 
-    if(!area){
-
-        return;
-
-    }
-
-
-
-    if(level < area.level){
+{
+name:"🌿 강가",
+level:5,
+background:"assets/map/river.png",
+fish:"강가"
+},
 
 
-        alert(
-
-        "필요 레벨 : Lv."
-
-        +
-
-        area.level
-
-        );
+{
+name:"🏕️ 계곡",
+level:10,
+background:"assets/map/valley.png",
+fish:"계곡"
+},
 
 
-        return;
-
-    }
-
-
-
-    if(boatLevel < area.boat){
-
-
-        alert(
-
-        "더 좋은 배가 필요합니다."
-
-        );
+{
+name:"🌅 호수",
+level:15,
+background:"assets/map/lake2.png",
+fish:"호수"
+},
 
 
-        return;
-
-    }
-
-
-
-    currentArea=id;
-
+{
+name:"🏝️ 해변",
+level:20,
+background:"assets/map/beach.png",
+fish:"해변"
+},
 
 
-    alert(
-
-    area.name+
-
-    " 입장!"
-
-    );
-
-
-    saveArea();
+{
+name:"🌊 깊은 바다",
+level:30,
+background:"assets/map/sea.png",
+fish:"깊은 바다"
+},
 
 
-    updateUI();
+{
+name:"🌑 심해",
+level:40,
+background:"assets/map/deepsea.png",
+fish:"심해"
+},
 
 
+{
+name:"❄️ 얼음 바다",
+level:50,
+background:"assets/map/ice.png",
+fish:"얼음 바다"
+},
+
+
+{
+name:"🌌 신비의 바다",
+level:70,
+background:"assets/map/mystic.png",
+fish:"신비의 바다"
+},
+
+
+{
+name:"👑 전설의 낚시터",
+level:100,
+background:"assets/map/legend.png",
+fish:"전설의 낚시터"
 }
 
 
-
-
-// 지역 목록 보기
-
-function showArea(){
-
-
-    let text=
-
-    "🌍 지역 목록\n\n";
-
-
-
-    areas.forEach(a=>{
-
-
-        text +=
-
-        a.name+
-
-        "\n필요 Lv."
-
-        +
-
-        a.level;
-
-
-
-        if(currentArea===a.id){
-
-            text += " ⭐현재";
-
-        }
-
-
-        text += "\n\n";
-
-
-    });
-
-
-
-    alert(text);
-
-
-}
+];
 
 
 
 
 
-// 현재 지역
+
+// 현재 지역 가져오기
 
 function getCurrentArea(){
 
 
-    return areas[currentArea];
+return areaList[currentArea];
 
 
 }
@@ -234,27 +112,55 @@ function getCurrentArea(){
 
 
 
-// 해금 체크
-
-function checkArea(){
 
 
-    areas.forEach(a=>{
+
+// 지역 이동
+
+function moveArea(index){
 
 
-        if(level>=a.level){
+if(!areaList[index])
+
+return;
 
 
-            a.open=true;
+
+if(level < areaList[index].level){
 
 
-        }
+alert(
+
+"⭐ 레벨 "
+
++
+
+areaList[index].level
+
++
+
+" 이상 필요"
+
+);
 
 
-    });
+return;
 
 
-    saveArea();
+}
+
+
+
+currentArea=index;
+
+
+
+changeBackground();
+
+
+
+updateUI();
+
 
 
 }
@@ -263,22 +169,33 @@ function checkArea(){
 
 
 
-// 저장
-
-function saveArea(){
 
 
-    localStorage.setItem(
 
-        "FishingKingArea",
+// 배경 변경
 
-        JSON.stringify({
+function changeBackground(){
 
-            currentArea:currentArea
 
-        })
+let bg=
 
-    );
+document.getElementById(
+
+"background"
+
+);
+
+
+
+if(bg){
+
+
+bg.src=
+
+areaList[currentArea].background;
+
+
+}
 
 
 }
@@ -287,37 +204,54 @@ function saveArea(){
 
 
 
-// 불러오기
-
-function loadArea(){
 
 
-    let data=
+// 지역창
 
-    localStorage.getItem(
+function showArea(){
 
-        "FishingKingArea"
 
-    );
+let text="🌍 지역\n\n";
 
 
 
-    if(data){
+areaList.forEach(
+
+(a,i)=>{
 
 
-        data=JSON.parse(data);
+text +=
 
+(i+1)
 
-        currentArea=
++
 
-        data.currentArea || 0;
+". "
 
++
 
-    }
+a.name
+
++
+
+" (Lv."
+
++
+
+a.level
+
++
+
+")\n";
 
 
 }
 
+);
 
 
-loadArea();
+
+alert(text);
+
+
+}
