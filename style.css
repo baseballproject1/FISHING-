@@ -1,145 +1,407 @@
-/* =====================
-   낚시왕 최종 디자인
+/* =========================
+   낚시왕 Pixel Style
    style.css
-===================== */
+========================= */
 
 
 *{
+
     box-sizing:border-box;
-    font-family:"Arial","Malgun Gothic",sans-serif;
+
+    image-rendering:pixelated;
+
 }
+
 
 
 body{
 
+
     margin:0;
 
-    padding:20px;
+    padding:0;
 
-    background:#e8f7ff;
+    background:#111;
 
-    text-align:center;
+    font-family:
 
-    color:#222;
+    "Courier New",
 
-}
+    monospace;
 
 
+    color:white;
 
-h1{
-
-    font-size:40px;
-
-    color:#0066aa;
-
-    margin-bottom:20px;
 
 }
 
 
 
 
-.status{
 
-    background:white;
-
-    border-radius:15px;
-
-    padding:15px;
-
-    margin:10px auto;
-
-    max-width:400px;
-
-    box-shadow:0 3px 10px #aaa;
-
-}
+.game-container{
 
 
+    width:95%;
 
-
-.status p{
-
-    margin:8px;
-
-    font-size:18px;
-
-}
-
-
-
-
-.menu{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:10px;
-
-    max-width:450px;
+    max-width:900px;
 
     margin:20px auto;
 
+    background:#222;
+
+    border:8px solid #555;
+
+    padding:15px;
+
+
 }
+
+
+
+
+
+.pixel-header{
+
+
+    text-align:center;
+
+    background:#333;
+
+    border:5px solid #777;
+
+    padding:10px;
+
+    margin-bottom:15px;
+
+
+}
+
+
+
+.pixel-header h1{
+
+
+    margin:0;
+
+    font-size:32px;
+
+
+}
+
+
+
+
+
+
+
+/* 저장 */
+
+.save-panel{
+
+
+    background:#1b1b1b;
+
+    border:4px solid #666;
+
+    padding:10px;
+
+    margin-bottom:15px;
+
+
+}
+
+
+
+
+.save-buttons{
+
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(3,1fr);
+
+    gap:8px;
+
+
+}
+
+
+
+
+
+
+
+
+/* 상태 */
+
+.status-panel{
+
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(4,1fr);
+
+    gap:10px;
+
+    margin-bottom:15px;
+
+
+}
+
+
+
+.status-box{
+
+
+    background:#333;
+
+    border:4px solid #888;
+
+    padding:10px;
+
+    text-align:center;
+
+    font-size:14px;
+
+
+}
+
+
+
+
+
+
+
+/* 픽셀 월드 */
+
+
+.pixel-world{
+
+
+    position:relative;
+
+    width:100%;
+
+    height:420px;
+
+    overflow:hidden;
+
+    border:8px solid #777;
+
+    background:#69c;
+
+
+}
+
+
+
+
+.background{
+
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+
+}
+
+
+
+
+
+.player{
+
+
+    position:absolute;
+
+    width:80px;
+
+    bottom:40px;
+
+    left:45%;
+
+
+}
+
+
+
+
+
+.boat{
+
+
+    position:absolute;
+
+    width:120px;
+
+    bottom:20px;
+
+    right:15%;
+
+
+}
+
+
+
+
+
+.fish-image{
+
+
+    position:absolute;
+
+    width:60px;
+
+    display:none;
+
+    top:40%;
+
+    left:50%;
+
+
+}
+
+
+
+
+
+
+/* 결과 */
+
+.result-box{
+
+
+    margin-top:15px;
+
+    background:#000;
+
+    border:5px solid #888;
+
+    padding:20px;
+
+    text-align:center;
+
+    min-height:80px;
+
+
+}
+
+
+
+
+
+
+
+/* 메뉴 */
+
+
+.menu-panel,
+
+
+.equipment-panel,
+
+
+.log-panel{
+
+
+    margin-top:15px;
+
+    background:#222;
+
+    border:5px solid #666;
+
+    padding:10px;
+
+
+}
+
+
+
+
+.menu-buttons{
+
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(5,1fr);
+
+    gap:8px;
+
+
+}
+
 
 
 
 
 button{
 
-    padding:15px;
 
-    border:none;
-
-    border-radius:12px;
-
-    background:#0088dd;
+    background:#444;
 
     color:white;
 
-    font-size:16px;
+    border:4px solid #999;
+
+    padding:10px;
 
     cursor:pointer;
 
+    font-family:
+
+    "Courier New",
+
+    monospace;
+
+
 }
+
+
 
 
 
 button:hover{
 
-    background:#0066aa;
+
+    background:#777;
+
 
 }
 
 
 
 
-#result{
 
 
-    background:white;
+/* 로그 */
 
-
-    max-width:450px;
+.log-panel{
 
 
     min-height:120px;
 
 
-    margin:20px auto;
+}
 
 
-    padding:20px;
+#log{
 
 
-    border-radius:15px;
+    background:#111;
 
+    padding:10px;
 
-    font-size:20px;
-
-
-    box-shadow:0 3px 10px #aaa;
+    border:3px solid #555;
 
 
 }
@@ -147,125 +409,69 @@ button:hover{
 
 
 
-.fish-common{
 
-    color:#555;
 
-}
 
 
-.fish-rare{
+/* 모바일 */
 
-    color:#008800;
 
-}
+@media(max-width:600px){
 
 
-.fish-legend{
 
-    color:#aa00aa;
+    .status-panel{
 
-}
 
+        grid-template-columns:
 
-.fish-myth{
+        repeat(2,1fr);
 
-    color:#ff8800;
-
-}
-
-
-
-
-.card{
-
-
-    background:white;
-
-
-    border-radius:15px;
-
-
-    padding:15px;
-
-
-    margin:10px;
-
-
-    box-shadow:0 2px 8px #aaa;
-
-
-}
-
-
-
-
-.area-open{
-
-    background:#d8ffd8;
-
-}
-
-
-
-.area-lock{
-
-    background:#dddddd;
-
-}
-
-
-
-
-.shop-item{
-
-
-    display:flex;
-
-
-    justify-content:space-between;
-
-
-    padding:12px;
-
-
-    background:white;
-
-
-    border-radius:10px;
-
-
-    margin:8px;
-
-
-}
-
-
-
-
-@media(max-width:500px){
-
-
-    h1{
-
-        font-size:32px;
 
     }
 
 
 
-    .menu{
+    .menu-buttons{
 
-        grid-template-columns:1fr;
+
+        grid-template-columns:
+
+        repeat(2,1fr);
+
+
+    }
+
+
+
+    .pixel-world{
+
+
+        height:300px;
+
 
     }
 
 
 
-    button{
+    .player{
 
-        font-size:18px;
+
+        width:60px;
+
 
     }
+
+
+
+    .boat{
+
+
+        width:90px;
+
+
+    }
+
+
 
 }
