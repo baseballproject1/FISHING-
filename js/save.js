@@ -1,11 +1,8 @@
 // ========================
-// 낚시왕 저장 시스템
+// 낚시왕 저장 시스템 최종본
 // save.js
 // ========================
 
-
-
-// 전체 저장
 
 function saveGame(){
 
@@ -13,25 +10,65 @@ function saveGame(){
     let data = {
 
 
-        gold:gold,
+        // 기본 데이터
+
+        gold: gold,
+
+        level: level,
+
+        exp: exp,
+
+        caughtFish: caughtFish,
 
 
-        level:level,
+
+        // 기록
+
+        ranking: ranking,
 
 
-        exp:exp,
+
+        // 지역
+
+        currentArea: currentArea,
 
 
-        caughtFish:caughtFish,
+
+        // 배
+
+        boatLevel: boatLevel,
 
 
-        maxWeightFish:maxWeightFish,
+
+        // 수족관
+
+        aquariumFish: aquariumFish,
+
+        aquariumRewards: aquariumRewards,
 
 
-        maxPriceFish:maxPriceFish,
+
+        // 아이템
+
+        inventory: inventory,
 
 
-        time:Date.now()
+
+        // 미션
+
+        missions: missions,
+
+
+
+        // 업적
+
+        achievements: achievements,
+
+
+
+        // 대회
+
+        contest: contest
 
 
     };
@@ -53,7 +90,6 @@ function saveGame(){
 
 
 
-// 전체 불러오기
 
 function loadGame(){
 
@@ -68,33 +104,141 @@ function loadGame(){
 
 
 
-    if(data){
+    if(!data){
+
+        return;
+
+    }
 
 
-        data = JSON.parse(data);
+
+    data = JSON.parse(data);
 
 
 
-        gold = data.gold ?? 10000;
+    gold = data.gold ?? 10000;
 
 
-        level = data.level ?? 1;
+    level = data.level ?? 1;
 
 
-        exp = data.exp ?? 0;
+    exp = data.exp ?? 0;
 
 
-        caughtFish = data.caughtFish ?? [];
+
+    caughtFish =
+
+    data.caughtFish ?? [];
 
 
-        maxWeightFish = data.maxWeightFish ?? null;
 
 
-        maxPriceFish = data.maxPriceFish ?? null;
+    if(typeof ranking !== "undefined"){
 
+
+        ranking =
+
+        data.ranking ?? ranking;
 
 
     }
+
+
+
+    if(typeof currentArea !== "undefined"){
+
+
+        currentArea =
+
+        data.currentArea ?? 0;
+
+
+    }
+
+
+
+    if(typeof boatLevel !== "undefined"){
+
+
+        boatLevel =
+
+        data.boatLevel ?? 0;
+
+
+    }
+
+
+
+    if(typeof aquariumFish !== "undefined"){
+
+
+        aquariumFish =
+
+        data.aquariumFish ?? [];
+
+
+    }
+
+
+
+    if(typeof aquariumRewards !== "undefined"){
+
+
+        aquariumRewards =
+
+        data.aquariumRewards ?? aquariumRewards;
+
+
+    }
+
+
+
+    if(typeof inventory !== "undefined"){
+
+
+        inventory =
+
+        data.inventory ?? inventory;
+
+
+    }
+
+
+
+    if(typeof missions !== "undefined"){
+
+
+        missions =
+
+        data.missions ?? missions;
+
+
+    }
+
+
+
+    if(typeof achievements !== "undefined"){
+
+
+        achievements =
+
+        data.achievements ?? achievements;
+
+
+    }
+
+
+
+    if(typeof contest !== "undefined"){
+
+
+        contest =
+
+        data.contest ?? contest;
+
+
+    }
+
 
 
 }
@@ -103,23 +247,18 @@ function loadGame(){
 
 
 
-// 데이터 삭제
 
 function resetGame(){
 
 
-    let check = confirm(
-
-        "정말 초기화할까요?"
-
-    );
+    if(confirm("저장 데이터를 삭제할까요?")){
 
 
+        localStorage.removeItem(
 
-    if(check){
+            "FishingKingSave"
 
-
-        localStorage.clear();
+        );
 
 
         location.reload();
