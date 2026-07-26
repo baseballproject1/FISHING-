@@ -1,53 +1,22 @@
-// ========================
-// 낚시왕 수족관 시스템
+// =========================
+// 낚시왕 수족관 / 도감 시스템
 // aquarium.js
-// ========================
+// =========================
 
 
 let aquariumFish = [];
 
 
 
-let aquariumRewards = [
 
-    {
-        count:20,
-        reward:5000,
-        complete:false
-    },
-
-    {
-        count:50,
-        reward:20000,
-        complete:false
-    },
-
-    {
-        count:100,
-        reward:100000,
-        complete:false
-    },
-
-    {
-        count:120,
-        reward:500000,
-        complete:false
-    }
-
-];
-
-
-
-
-
-// 물고기 등록
+// 물고기 추가
 
 function addAquarium(fish){
 
 
     let exist = aquariumFish.find(
 
-        f=>f.name===fish.name
+        f => f.name === fish.name
 
     );
 
@@ -59,95 +28,44 @@ function addAquarium(fish){
 
             name:fish.name,
 
-            grade:fish.grade
+            grade:fish.grade,
+
+            weight:fish.weight,
+
+            count:1
 
         });
+
+
+        addLog(
+
+        "📖 새로운 물고기 발견 : "
+
+        +
+
+        fish.name
+
+        );
+
+
+    }
+
+    else{
+
+
+        exist.count++;
 
 
     }
 
 
 
-    checkAquariumReward();
-
-
-    saveAquarium();
+    updateAquariumUI();
 
 
 }
 
 
-
-
-
-// 등급별 확인
-
-function getAquariumGrade(grade){
-
-
-    return aquariumFish.filter(
-
-        f=>f.grade===grade
-
-    ).length;
-
-
-}
-
-
-
-
-
-// 보상 확인
-
-function checkAquariumReward(){
-
-
-    aquariumRewards.forEach(r=>{
-
-
-        if(r.complete){
-
-            return;
-
-        }
-
-
-
-        if(aquariumFish.length>=r.count){
-
-
-            r.complete=true;
-
-
-            gold+=r.reward;
-
-
-
-            alert(
-
-            "🐠 수족관 보상!\n"
-
-            +
-
-            r.reward+
-
-            "G 획득"
-
-            );
-
-
-
-            updateUI();
-
-
-        }
-
-
-    });
-
-
-}
 
 
 
@@ -158,15 +76,71 @@ function checkAquariumReward(){
 function showAquarium(){
 
 
-    let text=
+    let text =
 
-    "🐠 수족관\n\n";
+    "🐠 수족관 도감\n\n";
+
+
+
+    if(aquariumFish.length===0){
+
+
+        text +=
+
+        "아직 발견한 물고기가 없습니다.";
+
+
+    }
+
+    else{
+
+
+        aquariumFish.forEach((f,i)=>{
+
+
+            text +=
+
+            (i+1)
+
+            +
+
+            ". "
+
+            +
+
+            f.name
+
+            +
+
+            " ["
+
+            +
+
+            f.grade
+
+            +
+
+            "] "
+
+            +
+
+            f.count
+
+            +
+
+            "마리\n";
+
+
+        });
+
+
+    }
 
 
 
     text +=
 
-    "등록 : "
+    "\n발견 : "
 
     +
 
@@ -174,90 +148,13 @@ function showAquarium(){
 
     +
 
-    "/120\n\n";
-
-
-
-    text +=
-
-    "일반 : "
-
-    +
-
-    getAquariumGrade("일반")
-
-    +
-
-    "\n";
-
-
-
-    text +=
-
-    "희귀 : "
-
-    +
-
-    getAquariumGrade("희귀")
-
-    +
-
-    "\n";
-
-
-
-    text +=
-
-    "전설 : "
-
-    +
-
-    getAquariumGrade("전설")
-
-    +
-
-    "\n";
-
-
-
-    text +=
-
-    "신화 : "
-
-    +
-
-    getAquariumGrade("신화");
+    "/120";
 
 
 
     alert(text);
 
 
-}
-
-
-
-
-
-// 저장
-
-function saveAquarium(){
-
-
-    localStorage.setItem(
-
-        "FishingKingAquarium",
-
-        JSON.stringify({
-
-            fish:aquariumFish,
-
-            reward:aquariumRewards
-
-        })
-
-    );
-
 
 }
 
@@ -265,44 +162,33 @@ function saveAquarium(){
 
 
 
-// 불러오기
-
-function loadAquarium(){
 
 
-    let data=
 
-    localStorage.getItem(
+// 도감 UI 업데이트
 
-        "FishingKingAquarium"
+function updateAquariumUI(){
+
+
+    let book =
+
+    document.getElementById(
+
+        "book"
 
     );
 
 
 
-    if(data){
+    if(book){
 
 
-        data=JSON.parse(data);
+        book.innerText =
 
-
-
-        aquariumFish=
-
-        data.fish || [];
-
-
-
-        aquariumRewards=
-
-        data.reward || aquariumRewards;
+        aquariumFish.length;
 
 
     }
 
 
 }
-
-
-
-loadAquarium();
