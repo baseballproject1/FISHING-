@@ -1,208 +1,31 @@
-// ========================
-// 낚시왕 아이템 보관함
+// =========================
+// 낚시왕 보관함 시스템
 // inventory.js
-// ========================
+// =========================
 
 
-let inventory = {
-
-    "🪱 일반 미끼":0,
-
-    "✨ 고급 미끼":0,
-
-    "🌟 황금 미끼":0,
-
-    "🍀 행운권":0,
-
-    "💰 골드 상자":0
-
-};
+let inventory = [];
 
 
 
 
 
-// 아이템 추가
+// 물고기 추가
 
-function addItem(item,count=1){
-
-
-    if(inventory[item]===undefined){
+function addInventory(fish){
 
 
-        inventory[item]=0;
-
-
-    }
+inventory.push(fish);
 
 
 
-    inventory[item]+=count;
-
-
-
-    saveInventory();
+updateInventoryUI();
 
 
 }
 
 
 
-
-
-// 아이템 사용
-
-function useItem(item){
-
-
-    if(!inventory[item] || inventory[item]<=0){
-
-
-        alert(
-
-        "아이템이 없습니다."
-
-        );
-
-
-        return false;
-
-
-    }
-
-
-
-    inventory[item]--;
-
-
-
-    switch(item){
-
-
-        case "🪱 일반 미끼":
-
-
-            alert(
-
-            "🪱 일반 미끼 사용!\n희귀 확률 증가"
-
-            );
-
-
-        break;
-
-
-
-        case "✨ 고급 미끼":
-
-
-            alert(
-
-            "✨ 고급 미끼 사용!\n전설 확률 증가"
-
-            );
-
-
-        break;
-
-
-
-        case "🌟 황금 미끼":
-
-
-            alert(
-
-            "🌟 황금 미끼 사용!\n신비한 물고기 확률 증가"
-
-            );
-
-
-        break;
-
-
-
-        case "🍀 행운권":
-
-
-            let bonus =
-            5000;
-
-
-            gold += bonus;
-
-
-            alert(
-
-            "🍀 행운권 사용!\n"
-
-            +
-
-            bonus
-
-            +
-
-            "G 획득"
-
-            );
-
-
-        break;
-
-
-
-        case "💰 골드 상자":
-
-
-            let reward =
-
-            Math.floor(
-
-            Math.random()*50000
-
-            )+10000;
-
-
-
-            gold += reward;
-
-
-
-            alert(
-
-            "💰 골드 상자!\n"
-
-            +
-
-            reward
-
-            +
-
-            "G 획득"
-
-            );
-
-
-        break;
-
-
-    }
-
-
-
-    updateUI();
-
-
-    saveInventory();
-
-
-    saveGame();
-
-
-
-    return true;
-
-
-}
 
 
 
@@ -213,37 +36,59 @@ function useItem(item){
 function showInventory(){
 
 
-    let text =
 
-    "🎒 아이템 보관함\n\n";
-
-
-
-    for(let item in inventory){
-
-
-        text +=
-
-        item
-
-        +
-
-        " : "
-
-        +
-
-        inventory[item]
-
-        +
-
-        "개\n";
-
-
-    }
+let text = "🎒 보관함\n\n";
 
 
 
-    alert(text);
+if(inventory.length === 0){
+
+
+text += "보관된 물고기가 없습니다.";
+
+
+}
+
+else{
+
+
+inventory.forEach((f,i)=>{
+
+
+text +=
+
+(i+1)
+
++
+
+". "
+
++
+
+f.name
+
++
+
+" "
+
++
+
+f.weight
+
++
+
+"kg\n";
+
+
+});
+
+
+}
+
+
+
+alert(text);
+
 
 
 }
@@ -252,18 +97,63 @@ function showInventory(){
 
 
 
-// 저장
-
-function saveInventory(){
 
 
-    localStorage.setItem(
 
-        "FishingKingInventory",
+// 물고기 판매
 
-        JSON.stringify(inventory)
+function sellFish(index){
 
-    );
+
+
+let fish = inventory[index];
+
+
+
+if(!fish)
+
+return;
+
+
+
+gold += fish.price;
+
+
+
+inventory.splice(index,1);
+
+
+
+updateInventoryUI();
+
+
+
+updateUI();
+
+
+
+alert(
+
+"💰 "
+
++
+
+fish.name
+
++
+
+" 판매!\n+"
+
++
+
+fish.price
+
++
+
+"G"
+
+);
+
 
 
 }
@@ -272,34 +162,94 @@ function saveInventory(){
 
 
 
-// 불러오기
-
-function loadInventory(){
-
-
-    let data =
-
-    localStorage.getItem(
-
-        "FishingKingInventory"
-
-    );
 
 
 
-    if(data){
+// 전체 판매
+
+function sellAllFish(){
 
 
-        inventory =
 
-        JSON.parse(data);
+let total = 0;
 
 
-    }
+
+inventory.forEach(f=>{
+
+
+total += f.price;
+
+
+});
+
+
+
+gold += total;
+
+
+
+inventory = [];
+
+
+
+updateInventoryUI();
+
+
+
+updateUI();
+
+
+
+alert(
+
+"💰 전체 판매 완료!\n+"
+
++
+
+total
+
++
+
+"G"
+
+);
+
 
 
 }
 
 
 
-loadInventory();
+
+
+
+
+
+// 보관함 UI
+
+function updateInventoryUI(){
+
+
+
+let count =
+
+document.getElementById(
+
+"itemCount"
+
+);
+
+
+
+if(count){
+
+
+count.innerText = inventory.length;
+
+
+}
+
+
+
+}
