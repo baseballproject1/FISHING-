@@ -1,49 +1,68 @@
-// ========================
+// =========================
 // 낚시왕 배 시스템
 // boat.js
-// ========================
+// =========================
 
 
 let boatLevel = 0;
 
 
 
-const boats = [
+const boatList = [
 
-    {
-        id:0,
-        name:"🚶 배 없음",
-        price:0,
-        area:4
-    },
+{
+name:"낡은 나무배",
+level:0,
+price:0,
+speed:0,
+image:"assets/boat/boat1.png"
+},
 
-    {
-        id:1,
-        name:"🛶 작은 보트",
-        price:10000,
-        area:5
-    },
 
-    {
-        id:2,
-        name:"⛵ 낚시 보트",
-        price:100000,
-        area:6
-    },
+{
+name:"작은 낚싯배",
+level:1,
+price:10000,
+speed:10,
+image:"assets/boat/boat2.png"
+},
 
-    {
-        id:3,
-        name:"🚤 고급 보트",
-        price:500000,
-        area:8
-    },
 
-    {
-        id:4,
-        name:"🚢 전설의 배",
-        price:5000000,
-        area:9
-    }
+{
+name:"튼튼한 어선",
+level:2,
+price:50000,
+speed:20,
+image:"assets/boat/boat3.png"
+},
+
+
+{
+name:"고급 낚시선",
+level:3,
+price:200000,
+speed:35,
+image:"assets/boat/boat4.png"
+},
+
+
+{
+name:"해양 탐험선",
+level:4,
+price:500000,
+speed:50,
+image:"assets/boat/boat5.png"
+},
+
+
+{
+name:"전설의 배",
+level:5,
+price:1000000,
+speed:80,
+image:"assets/boat/boat6.png"
+}
+
 
 ];
 
@@ -51,69 +70,113 @@ const boats = [
 
 
 
-// 배 구매
 
-function buyBoat(){
+// 배 구매 / 업그레이드
 
-
-    let nextBoat = boats[boatLevel+1];
+function upgradeBoat(){
 
 
-    if(!nextBoat){
-
-
-        alert(
-        "최고 등급 배입니다."
-        );
-
-
-        return;
-
-    }
+let next = boatLevel + 1;
 
 
 
-    if(gold < nextBoat.price){
+if(!boatList[next]){
 
 
-        alert(
-        "골드가 부족합니다."
-        );
+alert("최고 레벨 배입니다.");
 
-
-        return;
-
-    }
-
-
-
-    gold -= nextBoat.price;
-
-
-    boatLevel++;
-
-
-
-    alert(
-
-    nextBoat.name+
-
-    " 구매 완료!"
-
-    );
-
-
-
-    updateUI();
-
-
-    saveBoat();
-
-
-    saveGame();
+return;
 
 
 }
+
+
+
+let cost = boatList[next].price;
+
+
+
+if(gold < cost){
+
+
+alert("골드가 부족합니다.");
+
+return;
+
+
+}
+
+
+
+gold -= cost;
+
+
+boatLevel = next;
+
+
+
+changeBoatImage();
+
+
+
+updateUI();
+
+
+
+alert(
+
+"🚢 "
+
++
+
+boatList[next].name
+
++
+
+" 획득!"
+
+);
+
+
+}
+
+
+
+
+
+
+
+
+// 배 이미지 변경
+
+function changeBoatImage(){
+
+
+let img =
+
+document.getElementById(
+
+"boat"
+
+);
+
+
+
+if(img){
+
+
+img.src =
+
+boatList[boatLevel].image;
+
+
+}
+
+
+}
+
+
+
 
 
 
@@ -121,117 +184,47 @@ function buyBoat(){
 
 // 현재 배 확인
 
+function getBoat(){
+
+
+return boatList[boatLevel];
+
+
+}
+
+
+
+
+
+
+
+
+// 배 메뉴
+
 function showBoat(){
 
 
-    let boat = boats[boatLevel];
-
-
-    alert(
-
-    "🚢 현재 배\n\n"
-
-    +
-
-    boat.name
-
-    +
-
-    "\n이동 가능 지역 단계 : "
-
-    +
-
-    boat.area
-
-    );
-
-
-}
+let boat = getBoat();
 
 
 
+alert(
 
+"🚢 현재 배\n\n"
 
-// 지역 이동 가능 확인
++
 
-function canMoveArea(areaId){
+boat.name
 
++
 
-    let area = areas[areaId];
+"\n속도 : "
 
++
 
-    if(!area){
+boat.speed
 
-        return false;
-
-    }
-
-
-
-    return boatLevel >= area.boat;
+);
 
 
 }
-
-
-
-
-
-// 저장
-
-function saveBoat(){
-
-
-    localStorage.setItem(
-
-        "FishingKingBoat",
-
-        JSON.stringify({
-
-            boatLevel:boatLevel
-
-        })
-
-    );
-
-
-}
-
-
-
-
-
-// 불러오기
-
-function loadBoat(){
-
-
-    let data =
-
-    localStorage.getItem(
-
-        "FishingKingBoat"
-
-    );
-
-
-
-    if(data){
-
-
-        data = JSON.parse(data);
-
-
-        boatLevel =
-
-        data.boatLevel || 0;
-
-
-    }
-
-
-}
-
-
-
-loadBoat();
