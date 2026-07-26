@@ -1,65 +1,113 @@
-// ========================
+// =========================
 // 낚시왕 낚시 대회 시스템
 // contest.js
-// ========================
+// =========================
 
 
 let contest = {
 
-    join:false,
+    active:false,
 
-    bestFish:"",
+    score:0,
 
-    bestWeight:0,
+    bestFish:null,
 
-    rewardGet:false
+    reward:false
 
 };
 
 
 
 
-// AI 참가자
+// 대회 시작
 
-const contestPlayers = [
+function startContest(){
 
-    {
-        name:"초보 낚시꾼",
-        weight:150
-    },
 
-    {
-        name:"숙련 낚시꾼",
-        weight:400
-    },
+    contest.active = true;
 
-    {
-        name:"전문 낚시꾼",
-        weight:800
-    },
+    contest.score = 0;
 
-    {
-        name:"전설 낚시꾼",
-        weight:1500
-    }
+    contest.bestFish = null;
 
-];
+    contest.reward = false;
+
+
+    alert(
+        "🏅 낚시 대회 시작!\n\n가장 큰 물고기를 잡으세요!"
+    );
+
+
+}
 
 
 
 
-// 대회 참가
-
-function joinContest(){
 
 
-    if(contest.join){
+
+// 대회 기록
+
+function recordContest(name, weight){
 
 
-        alert(
-        "이미 참가 중입니다."
+    if(!contest.active)
+
+    return;
+
+
+
+    if(
+        !contest.bestFish ||
+        weight > contest.bestFish.weight
+    ){
+
+
+        contest.bestFish = {
+
+            name:name,
+
+            weight:weight
+
+        };
+
+
+        contest.score = Math.floor(weight * 100);
+
+
+        addLog(
+            "🏅 대회 최고 기록 갱신 : "
+            +
+            name
+            +
+            " "
+            +
+            weight
+            +
+            "kg"
         );
 
+
+    }
+
+
+}
+
+
+
+
+
+
+
+// 대회 종료
+
+function endContest(){
+
+
+    if(!contest.active){
+
+
+        alert("진행 중인 대회가 없습니다.");
 
         return;
 
@@ -67,112 +115,90 @@ function joinContest(){
 
 
 
-    contest.join=true;
+    contest.active=false;
 
 
-    contest.bestFish="";
+
+    let reward = 0;
 
 
-    contest.bestWeight=0;
+
+    if(contest.score >= 50000){
 
 
-    contest.rewardGet=false;
+        reward = 1000000;
+
+
+    }
+
+    else if(contest.score >= 10000){
+
+
+        reward = 300000;
+
+
+    }
+
+    else{
+
+
+        reward = 50000;
+
+
+    }
+
+
+
+
+
+    gold += reward;
+
+
+    contest.reward=true;
 
 
 
     alert(
-    "🏆 낚시 대회 참가 완료!"
-    );
 
+        "🏆 대회 종료!\n\n"
 
-    saveContest();
+        +
 
+        "최고 기록 : "
 
-}
+        +
 
+        (
+        contest.bestFish
+        ?
+        contest.bestFish.name
+        +
+        " "
+        +
+        contest.bestFish.weight
+        +
+        "kg"
+        :
+        "없음"
+        )
 
+        +
 
+        "\n💰 보상 : "
 
-// 낚시 기록 등록
+        +
 
-function recordContest(name,weight){
+        reward
 
+        +
 
-    if(!contest.join){
-
-        return;
-
-    }
-
-
-
-    if(weight > contest.bestWeight){
-
-
-        contest.bestWeight=weight;
-
-
-        contest.bestFish=name;
-
-
-
-        saveContest();
-
-
-    }
-
-
-}
-
-
-
-
-
-// 순위 계산
-
-function getContestRank(){
-
-
-    let ranking=[
-
-
-        {
-
-            name:"나",
-
-            weight:contest.bestWeight
-
-        }
-
-    ];
-
-
-
-    contestPlayers.forEach(player=>{
-
-
-        ranking.push({
-
-            name:player.name,
-
-            weight:player.weight
-
-        });
-
-
-    });
-
-
-
-    ranking.sort(
-
-        (a,b)=>b.weight-a.weight
+        "G"
 
     );
 
 
 
-    return ranking;
+    updateUI();
 
 
 }
@@ -181,130 +207,66 @@ function getContestRank(){
 
 
 
-// 결과 보기
+
+
+
+// 대회 정보
 
 function showContest(){
 
 
-    if(!contest.join){
+    let text =
 
-
-        alert(
-
-        "먼저 대회에 참가하세요."
-
-        );
-
-
-        return;
-
-    }
+    "🏅 낚시 대회\n\n";
 
 
 
-    let ranking=getContestRank();
-
-
-
-    let text=
-
-    "🏆 낚시 대회 결과\n\n";
-
-
-
-    ranking.forEach((p,i)=>{
+    if(contest.active){
 
 
         text +=
 
-        (i+1)
-
-        +
-
-        "위 "
-
-        +
-
-        p.name
-
-        +
-
-        " : "
-
-        +
-
-        p.weight.toFixed(1)
-
-        +
-
-        "kg\n";
+        "진행 중\n";
 
 
-    });
-
-
-
-    let myRank =
-
-    ranking.findIndex(
-
-        p=>p.name==="나"
-
-    )+1;
-
-
-
-    let reward=10000;
-
-
-
-    if(myRank===1){
-
-        reward=500000;
 
     }
 
-    else if(myRank===2){
+    else{
 
-        reward=200000;
 
-    }
+        text +=
 
-    else if(myRank===3){
+        "대기 중\n";
 
-        reward=100000;
 
     }
 
 
 
-    if(!contest.rewardGet){
+
+    if(contest.bestFish){
 
 
-        gold+=reward;
+        text +=
 
-
-        contest.rewardGet=true;
-
-
-
-        alert(
-
-        "🎁 대회 보상\n"
+        "\n최고 기록\n"
 
         +
 
-        reward+
+        contest.bestFish.name
 
-        "G 획득"
+        +
 
-        );
+        "\n"
 
+        +
 
-        updateUI();
+        contest.bestFish.weight
 
+        +
 
-        saveGame();
+        "kg";
 
 
     }
@@ -314,98 +276,4 @@ function showContest(){
     alert(text);
 
 
-
-    saveContest();
-
-
 }
-
-
-
-
-
-// 내 기록 보기
-
-function showContestRecord(){
-
-
-    alert(
-
-    "🎣 최고 기록\n\n"
-
-    +
-
-    contest.bestFish
-
-    +
-
-    "\n"
-
-    +
-
-    contest.bestWeight
-
-    +
-
-    "kg"
-
-    );
-
-
-}
-
-
-
-
-
-// 저장
-
-function saveContest(){
-
-
-    localStorage.setItem(
-
-        "FishingKingContest",
-
-        JSON.stringify(contest)
-
-    );
-
-
-}
-
-
-
-
-
-// 불러오기
-
-function loadContest(){
-
-
-    let data=
-
-    localStorage.getItem(
-
-        "FishingKingContest"
-
-    );
-
-
-
-    if(data){
-
-
-        contest=
-
-        JSON.parse(data);
-
-
-    }
-
-
-}
-
-
-
-loadContest();
