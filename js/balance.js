@@ -1,54 +1,74 @@
-// ========================
-// 낚시왕 최종 밸런스 시스템
+// =========================
+// 낚시왕 밸런스 시스템
 // balance.js
-// ========================
+// =========================
 
 
 
 const balance = {
 
 
-    // 등급별 가격 배율
+// 물고기 등급 배율
 
-    gradeBonus:{
-
-        "일반":1,
-
-        "희귀":2,
-
-        "전설":5,
-
-        "신화":10
-
-    },
+gradePrice : {
 
 
+"일반":1,
 
-    // 지역 보너스
+"희귀":3,
 
-    areaBonus:{
+"전설":10,
 
-        "🏞️ 초보 낚시터":1,
+"신화":30
 
-        "🌿 강가":1.2,
 
-        "🏕️ 계곡":1.5,
+},
 
-        "🌅 호수":2,
 
-        "🏝️ 해변":3,
 
-        "🌊 깊은 바다":5,
 
-        "🌑 심해":8,
+// 낚시 성공 확률
 
-        "❄️ 얼음 바다":10,
+catchRate : {
 
-        "🌌 신비의 바다":15,
 
-        "👑 전설의 낚시터":20
+normal:80,
 
-    }
+rare:15,
+
+legend:4,
+
+myth:1
+
+
+},
+
+
+
+
+// 경험치 설정
+
+exp : {
+
+
+normal:10,
+
+rare:50,
+
+legend:200,
+
+myth:500
+
+
+},
+
+
+
+
+// 레벨업 필요 경험치
+
+levelNeed : 100
+
 
 
 };
@@ -57,34 +77,31 @@ const balance = {
 
 
 
+
+
+
+
 // 물고기 가격 계산
 
-function calculateFishPrice(fish,weight){
+function calculateFishPrice(fish){
 
 
-    let grade =
+let rate =
 
-    balance.gradeBonus[fish.grade] || 1;
+balance.gradePrice[fish.grade]
 
+||
 
-
-    let area =
-
-    balance.areaBonus[fish.area] || 1;
+1;
 
 
 
-    return Math.floor(
+return Math.floor(
 
-        weight *
+fish.price * rate
 
-        fish.price *
+);
 
-        grade *
-
-        area
-
-    );
 
 
 }
@@ -93,43 +110,56 @@ function calculateFishPrice(fish,weight){
 
 
 
-// 경험치 계산
-
-function calculateExp(fish){
-
-
-    let exp=10;
 
 
 
-    if(fish.grade==="희귀"){
+// 물고기 경험치 계산
 
-        exp=20;
-
-    }
+function getFishExp(fish){
 
 
+return (
 
-    if(fish.grade==="전설"){
+balance.exp[fish.grade]
 
-        exp=50;
+||
 
-    }
+10
 
-
-
-    if(fish.grade==="신화"){
-
-        exp=100;
-
-    }
-
-
-
-    return exp;
+);
 
 
 }
+
+
+
+
+
+
+
+
+// 낚시 성공 판정
+
+function fishingChance(grade){
+
+
+let chance =
+
+balance.catchRate[grade]
+
+||
+
+balance.catchRate.normal;
+
+
+
+return Math.random()*100 < chance;
+
+
+}
+
+
+
 
 
 
@@ -137,30 +167,16 @@ function calculateExp(fish){
 
 // 레벨 필요 경험치
 
-function needExp(){
+function getNeedExp(){
 
 
-    return level * 100;
+return (
 
+level *
 
-}
+balance.levelNeed
 
-
-
-
-
-// 골드 보정
-
-function addGold(amount){
-
-
-    gold += Math.floor(amount);
-
-
-    updateUI();
-
-
-    saveGame();
+);
 
 
 }
