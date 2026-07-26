@@ -1,189 +1,234 @@
-// ========================
+// =========================
 // 낚시왕 미션 시스템
 // mission.js
-// ========================
+// =========================
 
 
 let missions = [
 
-    {
-        id:1,
-        name:"🐟 물고기 10마리 잡기",
-        target:10,
-        reward:5000,
-        complete:false
-    },
+{
+id:1,
+name:"첫 낚시 도전",
+type:"fish",
+target:1,
+count:0,
+rewardGold:1000,
+rewardExp:50,
+complete:false
+},
 
-    {
-        id:2,
-        name:"🎣 30마리 낚기",
-        target:30,
-        reward:15000,
-        complete:false
-    },
+{
+id:2,
+name:"물고기 10마리 잡기",
+type:"fish",
+target:10,
+count:0,
+rewardGold:5000,
+rewardExp:200,
+complete:false
+},
 
-    {
-        id:3,
-        name:"⭐ 희귀 물고기 획득",
-        target:"희귀",
-        reward:20000,
-        complete:false
-    },
+{
+id:3,
+name:"희귀 물고기 발견",
+type:"rare",
+target:1,
+count:0,
+rewardGold:10000,
+rewardExp:500,
+complete:false
+},
 
-    {
-        id:4,
-        name:"👑 전설 물고기 획득",
-        target:"전설",
-        reward:100000,
-        complete:false
-    },
+{
+id:4,
+name:"전설 물고기 잡기",
+type:"legend",
+target:1,
+count:0,
+rewardGold:50000,
+rewardExp:1000,
+complete:false
+},
 
-    {
-        id:5,
-        name:"🐠 도감 50종 완성",
-        target:50,
-        reward:50000,
-        complete:false
-    }
+{
+id:5,
+name:"도감 20종 완성",
+type:"book",
+target:20,
+count:0,
+rewardGold:100000,
+rewardExp:2000,
+complete:false
+}
 
 ];
 
 
 
 
-// 미션 확인
+
+
+// 미션 체크
 
 function checkMission(){
 
 
-    missions.forEach(m=>{
+missions.forEach(m=>{
 
 
-        if(m.complete){
+if(m.complete)
 
-            return;
+return;
 
-        }
 
 
+if(m.type==="fish"){
 
-        let clear=false;
 
-
-
-        if(m.id===1){
-
-            if(caughtFish.length>=10){
-
-                clear=true;
-
-            }
-
-        }
-
-
-
-        if(m.id===2){
-
-            if(caughtFish.length>=30){
-
-                clear=true;
-
-            }
-
-        }
-
-
-
-        if(m.id===3){
-
-            if(
-
-            caughtFish.some(
-
-            f=>f.grade==="희귀"
-
-            )
-
-            ){
-
-                clear=true;
-
-            }
-
-        }
-
-
-
-        if(m.id===4){
-
-            if(
-
-            caughtFish.some(
-
-            f=>f.grade==="전설"
-
-            )
-
-            ){
-
-                clear=true;
-
-            }
-
-        }
-
-
-
-        if(m.id===5){
-
-            if(
-
-            aquariumFish.length>=50
-
-            ){
-
-                clear=true;
-
-            }
-
-        }
-
-
-
-        if(clear){
-
-
-            m.complete=true;
-
-
-            gold += m.reward;
-
-
-
-            alert(
-
-            "📜 미션 완료!\n"+
-            m.name+
-            "\n"+
-            m.reward+
-            "G 획득"
-
-            );
-
-
-            updateUI();
-
-
-            saveMission();
-
-        }
-
-
-    });
+m.count++;
 
 
 }
+
+
+
+if(m.type==="rare"){
+
+
+let last =
+
+caughtFish[caughtFish.length-1];
+
+
+if(last && last.grade==="희귀")
+
+m.count++;
+
+
+}
+
+
+
+if(m.type==="legend"){
+
+
+let last =
+
+caughtFish[caughtFish.length-1];
+
+
+if(last && 
+
+(last.grade==="전설" || last.grade==="신화"))
+
+m.count++;
+
+
+}
+
+
+
+if(m.type==="book"){
+
+
+if(typeof aquariumFish!=="undefined")
+
+m.count=aquariumFish.length;
+
+
+}
+
+
+
+
+if(m.count>=m.target){
+
+
+completeMission(m);
+
+
+}
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+// 미션 완료
+
+function completeMission(m){
+
+
+m.complete=true;
+
+
+
+gold += m.rewardGold;
+
+
+exp += m.rewardExp;
+
+
+
+addLog(
+
+"📜 미션 완료 : "
+
++
+
+m.name
+
+);
+
+
+
+alert(
+
+"🎉 미션 완료!\n\n"
+
++
+
+m.name
+
++
+
+"\n💰 "
+
++
+
+m.rewardGold
+
++
+
+"G\n⭐ "
+
++
+
+m.rewardExp
+
++
+
+" EXP"
+
+);
+
+
+
+updateUI();
+
+
+}
+
+
+
 
 
 
@@ -193,81 +238,51 @@ function checkMission(){
 function showMission(){
 
 
-    let text="📜 미션\n\n";
-
-
-    missions.forEach(m=>{
-
-
-        text +=
-
-        m.name+
-        " : "+
-        (m.complete?"✅":"❌")
-        +
-        "\n";
-
-
-    });
+let text="📜 미션\n\n";
 
 
 
-    alert(text);
+missions.forEach(m=>{
 
 
-}
+text +=
+
+m.name
+
++
+
+"\n"
+
++
+
+m.count
+
++
+
+"/"
+
++
+
+m.target
+
++
+
+" "
+
++
+
+(m.complete?"✅":"❌")
+
++
+
+"\n\n";
 
 
-
-
-
-// 저장
-
-function saveMission(){
-
-
-    localStorage.setItem(
-
-        "FishingKingMission",
-
-        JSON.stringify(missions)
-
-    );
-
-
-}
-
-
-
-
-
-// 불러오기
-
-function loadMission(){
-
-
-    let data=
-
-    localStorage.getItem(
-
-        "FishingKingMission"
-
-    );
+});
 
 
 
-    if(data){
-
-
-        missions=
-
-        JSON.parse(data);
-
-
-    }
+alert(text);
 
 
 }
-
-
-loadMission();
