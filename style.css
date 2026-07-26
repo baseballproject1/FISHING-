@@ -1,0 +1,271 @@
+/* =====================
+   낚시왕 최종 디자인
+   style.css
+===================== */
+
+
+*{
+    box-sizing:border-box;
+    font-family:"Arial","Malgun Gothic",sans-serif;
+}
+
+
+body{
+
+    margin:0;
+
+    padding:20px;
+
+    background:#e8f7ff;
+
+    text-align:center;
+
+    color:#222;
+
+}
+
+
+
+h1{
+
+    font-size:40px;
+
+    color:#0066aa;
+
+    margin-bottom:20px;
+
+}
+
+
+
+
+.status{
+
+    background:white;
+
+    border-radius:15px;
+
+    padding:15px;
+
+    margin:10px auto;
+
+    max-width:400px;
+
+    box-shadow:0 3px 10px #aaa;
+
+}
+
+
+
+
+.status p{
+
+    margin:8px;
+
+    font-size:18px;
+
+}
+
+
+
+
+.menu{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:10px;
+
+    max-width:450px;
+
+    margin:20px auto;
+
+}
+
+
+
+
+button{
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#0088dd;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+
+
+button:hover{
+
+    background:#0066aa;
+
+}
+
+
+
+
+#result{
+
+
+    background:white;
+
+
+    max-width:450px;
+
+
+    min-height:120px;
+
+
+    margin:20px auto;
+
+
+    padding:20px;
+
+
+    border-radius:15px;
+
+
+    font-size:20px;
+
+
+    box-shadow:0 3px 10px #aaa;
+
+
+}
+
+
+
+
+.fish-common{
+
+    color:#555;
+
+}
+
+
+.fish-rare{
+
+    color:#008800;
+
+}
+
+
+.fish-legend{
+
+    color:#aa00aa;
+
+}
+
+
+.fish-myth{
+
+    color:#ff8800;
+
+}
+
+
+
+
+.card{
+
+
+    background:white;
+
+
+    border-radius:15px;
+
+
+    padding:15px;
+
+
+    margin:10px;
+
+
+    box-shadow:0 2px 8px #aaa;
+
+
+}
+
+
+
+
+.area-open{
+
+    background:#d8ffd8;
+
+}
+
+
+
+.area-lock{
+
+    background:#dddddd;
+
+}
+
+
+
+
+.shop-item{
+
+
+    display:flex;
+
+
+    justify-content:space-between;
+
+
+    padding:12px;
+
+
+    background:white;
+
+
+    border-radius:10px;
+
+
+    margin:8px;
+
+
+}
+
+
+
+
+@media(max-width:500px){
+
+
+    h1{
+
+        font-size:32px;
+
+    }
+
+
+
+    .menu{
+
+        grid-template-columns:1fr;
+
+    }
+
+
+
+    button{
+
+        font-size:18px;
+
+    }
+
+}
