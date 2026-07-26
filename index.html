@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>낚시왕</title>
+<title>🎣 낚시왕 Pixel</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -17,25 +17,231 @@
 <body>
 
 
+<div class="game-container">
+
+
+<!-- 게임 제목 -->
+
+<header class="pixel-header">
+
 <h1>🎣 낚시왕</h1>
 
+</header>
 
 
-<div class="status">
 
-<p>💰 골드 : <span id="gold">10000</span>G</p>
 
-<p>⭐ 레벨 : Lv.<span id="level">1</span></p>
 
-<p>🌍 지역 : <span id="area">🏞️ 초보 낚시터</span></p>
+<!-- 저장 슬롯 -->
 
-<p>🐟 도감 : <span id="book">0</span>/120</p>
+<section class="save-panel">
+
+
+<h3>💾 저장</h3>
+
+
+<div class="save-buttons">
+
+
+<button onclick="saveSlot(1)">
+저장 1
+</button>
+
+
+<button onclick="loadSlot(1)">
+불러오기 1
+</button>
+
+
+<button onclick="deleteSlot(1)">
+삭제 1
+</button>
+
+
+
+<button onclick="saveSlot(2)">
+저장 2
+</button>
+
+
+<button onclick="loadSlot(2)">
+불러오기 2
+</button>
+
+
+<button onclick="deleteSlot(2)">
+삭제 2
+</button>
+
+
+
+<button onclick="saveSlot(3)">
+저장 3
+</button>
+
+
+<button onclick="loadSlot(3)">
+불러오기 3
+</button>
+
+
+<button onclick="deleteSlot(3)">
+삭제 3
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+<!-- 상태창 -->
+
+<section class="status-panel">
+
+
+<div class="status-box">
+
+💰 골드
+
+<br>
+
+<span id="gold">
+10000
+</span>
+
+G
 
 </div>
 
 
 
-<div class="menu">
+<div class="status-box">
+
+⭐ 레벨
+
+<br>
+
+Lv.
+
+<span id="level">
+1
+</span>
+
+</div>
+
+
+
+<div class="status-box">
+
+🌍 지역
+
+<br>
+
+<span id="area">
+초보 낚시터
+</span>
+
+</div>
+
+
+
+<div class="status-box">
+
+🐟 도감
+
+<br>
+
+<span id="book">
+0
+</span>
+
+/120
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- 픽셀 월드 -->
+
+<section class="pixel-world">
+
+
+<img 
+
+id="background"
+
+class="background"
+
+src="assets/lake.png">
+
+
+
+<img
+
+id="player"
+
+class="player"
+
+src="assets/player.png">
+
+
+
+<img
+
+id="boat"
+
+class="boat"
+
+src="assets/boat.png">
+
+
+
+<img
+
+id="fishImage"
+
+class="fish-image"
+
+src="assets/fish.png">
+
+
+</section>
+
+
+
+
+
+
+<!-- 낚시 결과 -->
+
+<section id="result"
+
+class="result-box">
+
+
+🎣 낚시를 시작하세요!
+
+
+</section><!-- 메뉴 -->
+
+<section class="menu-panel">
+
+
+<h3>🎮 메뉴</h3>
+
+
+<div class="menu-buttons">
 
 
 <button onclick="fish()">
@@ -43,9 +249,17 @@
 </button>
 
 
+
 <button onclick="showArea()">
 🌍 지역
 </button>
+
+
+
+<button onclick="showBoat()">
+🚢 배
+</button>
+
 
 
 <button onclick="showAquarium()">
@@ -53,9 +267,11 @@
 </button>
 
 
+
 <button onclick="showInventory()">
 🎒 보관함
 </button>
+
 
 
 <button onclick="showShop()">
@@ -63,9 +279,11 @@
 </button>
 
 
+
 <button onclick="showMission()">
 📜 미션
 </button>
+
 
 
 <button onclick="showAchievement()">
@@ -73,14 +291,11 @@
 </button>
 
 
+
 <button onclick="showContest()">
 🏅 낚시 대회
 </button>
 
-
-<button onclick="showBoat()">
-🚢 배
-</button>
 
 
 <button onclick="showRanking()">
@@ -91,11 +306,77 @@
 </div>
 
 
+</section>
 
 
-<div id="result">
 
-🎣 낚시를 시작하세요!
+
+
+
+
+<!-- 현재 장비 -->
+
+<section class="equipment-panel">
+
+
+<h3>🎣 장비</h3>
+
+
+<div>
+
+🚢 현재 배 :
+
+<span id="boat">
+배 없음
+</span>
+
+</div>
+
+
+
+<div>
+
+🎒 아이템 :
+
+<span id="itemCount">
+0
+</span>
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- 픽셀 로그 -->
+
+<section class="log-panel">
+
+
+<h3>📜 낚시 기록</h3>
+
+
+<div id="log">
+
+아직 기록이 없습니다.
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
 
 </div>
 
@@ -103,19 +384,11 @@
 
 
 
-<!-- 데이터 -->
+
+
+<!-- 시스템 파일 -->
 
 <script src="js/fish.js"></script>
-
-
-
-<!-- 저장 -->
-
-<script src="js/save.js"></script>
-
-
-
-<!-- 밸런스 / 효과 -->
 
 <script src="js/balance.js"></script>
 
@@ -123,8 +396,9 @@
 
 
 
+<script src="js/save.js"></script>
 
-<!-- 주요 시스템 -->
+
 
 <script src="js/area.js"></script>
 
@@ -146,10 +420,8 @@
 
 
 
-
-<!-- 메인 게임 -->
-
 <script src="js/game.js"></script>
+
 
 
 
