@@ -1,18 +1,23 @@
-// ========================
-// 낚시왕 기록 & 랭킹 시스템
+// =========================
+// 낚시왕 기록 / 랭킹 시스템
 // ranking.js
-// ========================
+// =========================
 
 
 let ranking = {
 
+
     maxWeight:0,
 
-    maxWeightFish:"",
+
+    maxFish:"없음",
+
 
     maxPrice:0,
 
-    maxPriceFish:""
+
+    maxLevel:1
+
 
 };
 
@@ -20,9 +25,13 @@ let ranking = {
 
 
 
-// 기록 갱신
 
-function updateRecord(fish,weight,price){
+// 기록 업데이트
+
+function updateRecord(fish, weight, price){
+
+
+    // 최고 무게
 
 
     if(weight > ranking.maxWeight){
@@ -31,11 +40,24 @@ function updateRecord(fish,weight,price){
         ranking.maxWeight = weight;
 
 
-        ranking.maxWeightFish = fish.name;
+        ranking.maxFish = fish.name;
+
+
+        addLog(
+
+        "🏆 최고 무게 기록 갱신!"
+
+        );
 
 
     }
 
+
+
+
+
+
+    // 최고 판매가
 
 
     if(price > ranking.maxPrice){
@@ -44,14 +66,24 @@ function updateRecord(fish,weight,price){
         ranking.maxPrice = price;
 
 
-        ranking.maxPriceFish = fish.name;
-
-
     }
 
 
 
-    saveRanking();
+
+
+
+    // 최고 레벨
+
+
+    if(level > ranking.maxLevel){
+
+
+        ranking.maxLevel = level;
+
+
+    }
+
 
 
 }
@@ -60,9 +92,13 @@ function updateRecord(fish,weight,price){
 
 
 
-// 기록 보기
+
+
+
+// 랭킹 보기
 
 function showRanking(){
+
 
 
     let text =
@@ -73,15 +109,21 @@ function showRanking(){
 
     text +=
 
-    "🏆 최고 무게\n"
+    "🐟 최고 물고기 : "
 
     +
 
-    ranking.maxWeightFish
+    ranking.maxFish
 
     +
 
-    "\n"
+    "\n";
+
+
+
+    text +=
+
+    "⚖️ 최고 무게 : "
 
     +
 
@@ -89,21 +131,13 @@ function showRanking(){
 
     +
 
-    "kg\n\n";
+    "kg\n";
 
 
 
     text +=
 
-    "💰 최고 판매가\n"
-
-    +
-
-    ranking.maxPriceFish
-
-    +
-
-    "\n"
+    "💰 최고 판매가 : "
 
     +
 
@@ -111,7 +145,17 @@ function showRanking(){
 
     +
 
-    "G";
+    "G\n";
+
+
+
+    text +=
+
+    "⭐ 최고 레벨 : "
+
+    +
+
+    ranking.maxLevel;
 
 
 
@@ -124,54 +168,30 @@ function showRanking(){
 
 
 
-// 저장
-
-function saveRanking(){
-
-
-    localStorage.setItem(
-
-        "FishingKingRanking",
-
-        JSON.stringify(ranking)
-
-    );
-
-
-}
 
 
 
+// 기록 초기화
+
+function resetRanking(){
 
 
-// 불러오기
-
-function loadRanking(){
+    ranking = {
 
 
-    let data =
-
-    localStorage.getItem(
-
-        "FishingKingRanking"
-
-    );
+        maxWeight:0,
 
 
-
-    if(data){
-
-
-        ranking =
-
-        JSON.parse(data);
+        maxFish:"없음",
 
 
-    }
+        maxPrice:0,
+
+
+        maxLevel:1
+
+
+    };
 
 
 }
-
-
-
-loadRanking();
