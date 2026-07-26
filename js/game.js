@@ -1,5 +1,5 @@
 // ========================
-// 낚시왕 메인 게임
+// 낚시왕 메인 게임 최종본
 // game.js
 // ========================
 
@@ -12,18 +12,17 @@ let exp = 0;
 
 let caughtFish = [];
 
-let maxWeightFish = null;
-
-let maxPriceFish = null;
 
 
 
-// 낚시 실행
+
+// 낚시
 
 function fish(){
 
 
     let areaData = getCurrentArea();
+
 
 
     let possibleFish = fishList.filter(
@@ -36,7 +35,9 @@ function fish(){
 
     if(possibleFish.length === 0){
 
+
         possibleFish = fishList;
+
 
     }
 
@@ -47,52 +48,113 @@ function fish(){
     possibleFish[
 
         Math.floor(
-            Math.random()*possibleFish.length
+
+            Math.random()
+
+            *
+
+            possibleFish.length
+
         )
 
     ];
 
 
 
+
+
     let weight =
 
-    (
+    Number(
+
+        (
 
         Math.random()
 
         *
 
-        (fishData.max-fishData.min)
+        (
+
+        fishData.max -
+
+        fishData.min
+
+        )
 
         +
 
         fishData.min
 
-    ).toFixed(1);
+        )
 
-
-
-    let price =
-
-    Math.floor(
-
-        weight * fishData.price
+        .toFixed(1)
 
     );
 
 
 
-    caughtFish.push({
+
+
+
+    let price;
+
+
+
+    if(typeof calculateFishPrice === "function"){
+
+
+        price = calculateFishPrice(
+
+            fishData,
+
+            weight
+
+        );
+
+
+    }
+
+    else{
+
+
+        price = Math.floor(
+
+            weight *
+
+            fishData.price
+
+        );
+
+
+    }
+
+
+
+
+
+
+    let catchData = {
+
 
         name:fishData.name,
 
+
         grade:fishData.grade,
 
-        weight:Number(weight),
+
+        weight:weight,
+
 
         price:price
 
-    });
+
+    };
+
+
+
+
+
+    caughtFish.push(catchData);
 
 
 
@@ -100,7 +162,25 @@ function fish(){
 
 
 
-    exp += 10;
+
+
+    if(typeof calculateExp === "function"){
+
+
+        exp += calculateExp(fishData);
+
+
+    }
+
+    else{
+
+
+        exp += 10;
+
+
+    }
+
+
 
 
 
@@ -108,39 +188,79 @@ function fish(){
 
 
 
-    addAquarium({
-
-        name:fishData.name,
-
-        grade:fishData.grade
-
-    });
 
 
+    if(typeof addAquarium === "function"){
 
-    recordContest(
 
-        fishData.name,
+        addAquarium(catchData);
 
-        Number(weight)
 
-    );
+    }
 
 
 
-    updateRecord(
-
-        fishData,
-
-        Number(weight),
-
-        price
-
-    );
 
 
+    if(typeof recordContest === "function"){
 
-    checkAchievement();
+
+        recordContest(
+
+            fishData.name,
+
+            weight
+
+        );
+
+
+    }
+
+
+
+
+
+    if(typeof updateRecord === "function"){
+
+
+        updateRecord(
+
+            fishData,
+
+            weight,
+
+            price
+
+        );
+
+
+    }
+
+
+
+
+
+    if(typeof checkMission === "function"){
+
+
+        checkMission();
+
+
+    }
+
+
+
+
+
+    if(typeof checkAchievement === "function"){
+
+
+        checkAchievement();
+
+
+    }
+
+
 
 
 
@@ -155,10 +275,22 @@ function fish(){
     );
 
 
+
+
+
+    if(typeof saveGame === "function"){
+
+
+        saveGame();
+
+
+    }
+
+
+
+
+
     updateUI();
-
-
-    saveGame();
 
 
 }
@@ -167,28 +299,48 @@ function fish(){
 
 
 
-// 레벨 체크
+
+
+// 레벨 업
 
 function levelCheck(){
 
 
-    if(exp >= level*100){
+    let need = level * 100;
 
 
-        exp=0;
+
+    if(exp >= need){
+
+
+
+        exp -= need;
+
 
 
         level++;
 
 
+
         alert(
 
-        "⭐ 레벨 업!\nLv."+level
+        "⭐ 레벨 업!\nLv."
+
+        +
+
+        level
 
         );
 
 
-        checkArea();
+
+        if(typeof checkArea === "function"){
+
+
+            checkArea();
+
+
+        }
 
 
     }
@@ -199,36 +351,114 @@ function levelCheck(){
 
 
 
+
+
+
 // 낚시 결과 표시
 
-function showCatch(fish,weight,price){
+function showCatch(
+
+fish,
+
+weight,
+
+price
+
+){
+
 
 
     let result =
 
-    document.getElementById("result");
+    document.getElementById(
+
+        "result"
+
+    );
+
+
+
+
+
+    let effectText="🎣 낚시 성공!";
+
+
+
+    if(typeof fishEffect === "function"){
+
+
+        effectText = fishEffect(fish);
+
+
+    }
+
+
 
 
 
     result.innerHTML =
 
-    "🎣 낚시 성공!<br><br>"+
 
-    fish.name+
+    "<h2>"
 
-    "<br>등급 : "+
+    +
 
-    fish.grade+
+    effectText
 
-    "<br>무게 : "+
+    +
 
-    weight+
+    "</h2>"
 
-    "kg<br>"+
+    +
 
-    "판매가 : "+
 
-    price+
+    "🐟 "
+
+    +
+
+    fish.name
+
+    +
+
+    "<br>"
+
+    +
+
+    "등급 : "
+
+    +
+
+    fish.grade
+
+    +
+
+    "<br>"
+
+    +
+
+    "무게 : "
+
+    +
+
+    weight
+
+    +
+
+    "kg"
+
+    +
+
+    "<br>"
+
+    +
+
+    "💰 "
+
+    +
+
+    price
+
+    +
 
     "G";
 
@@ -240,32 +470,65 @@ function showCatch(fish,weight,price){
 
 
 
+
+
 // 화면 업데이트
 
 function updateUI(){
 
 
-    document.getElementById("gold").innerText=
 
-    gold;
+    let goldText =
 
-
-
-    document.getElementById("level").innerText=
-
-    level;
+    document.getElementById("gold");
 
 
 
-    document.getElementById("area").innerText=
+    let levelText =
 
-    getCurrentArea().name;
+    document.getElementById("level");
 
 
 
-    document.getElementById("book").innerText=
+    let areaText =
 
-    aquariumFish.length;
+    document.getElementById("area");
+
+
+
+    let bookText =
+
+    document.getElementById("book");
+
+
+
+
+
+    if(goldText)
+
+        goldText.innerText = gold;
+
+
+
+    if(levelText)
+
+        levelText.innerText = level;
+
+
+
+    if(areaText && typeof getCurrentArea==="function")
+
+        areaText.innerText =
+
+        getCurrentArea().name;
+
+
+
+    if(bookText && typeof aquariumFish!=="undefined")
+
+        bookText.innerText =
+
+        aquariumFish.length;
 
 
 }
@@ -274,6 +537,5 @@ function updateUI(){
 
 
 
-// 시작
 
 updateUI();
